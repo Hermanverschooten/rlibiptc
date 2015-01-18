@@ -1,5 +1,5 @@
 /*
- * libiptc.h
+ * rlibiptc.h
  *
  * Simple interface to some function of iptables through the use of libiptc.
  *

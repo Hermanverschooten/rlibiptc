@@ -9,5 +9,5 @@ unless find_library('ip4tc','iptc_init')
   abort "Cannot find required library ip4tc"
 end
 
-create_makefile('libiptc')
+create_makefile('rlibiptc')
 

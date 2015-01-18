@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'libiptc/version'
+require 'rlibiptc/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "libiptc"
-  spec.version       = Libiptc::VERSION
+  spec.name          = "rlibiptc"
+  spec.version       = Rlibiptc::VERSION
   spec.authors       = ["Herman verschooten"]
   spec.email         = ["Herman@verschooten.net"]
   spec.summary       = %q{Limited interface to libiptc.}
   spec.description   = %q{Interface to some features of iptables using libtipc}
-  spec.homepage      = "https://github.com/Hermanverschooten/libiptc"
+  spec.homepage      = "https://github.com/Hermanverschooten/rlibiptc"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

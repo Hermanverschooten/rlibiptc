@@ -1,5 +1,5 @@
 /*
- * libiptc.c
+ * rlibiptc.c
  *
  * Simple interface to some function of iptables through the use of libiptc.
  *
@@ -8,15 +8,15 @@
  */
 
 #include <ruby.h>
-#include <libiptc.h>
+#include <rlibiptc.h>
 #include <libiptc/xtcshared.h>
 #include <libiptc/libiptc.h>
 #include <xtables.h>
 
 VALUE Module = Qnil;
 
-void Init_libiptc() {
-    Module = rb_define_module("Libiptc");
+void Init_rlibiptc() {
+    Module = rb_define_module("Rlibiptc");
     rb_define_module_function(Module, "init", method_iptc_init, 1);
 }
 
