@@ -11,5 +11,6 @@
 #define _RUBY_LIBIPTC_H
 
 VALUE method_iptc_init(VALUE, VALUE);
+VALUE method_iptc_close(VALUE);
 
 #endif
