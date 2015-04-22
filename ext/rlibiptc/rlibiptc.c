@@ -65,11 +65,99 @@ VALUE method_chains(VALUE self) {
     return arr;
 }
 
-VALUE method_rules(VALUE self, VALUE chain_name) {
-    char *chain = StringValueCStr(chain_name);
+VALUE method_flush(VALUE self, VALUE chain_name) {
 
-    if(strlen(chain) ==0)
-        rb_raise(rb_eStandardError, "Chain is required!");
+    const char *chain = StringValueCStr(chain_name);
+
+    open_iptables(self);
+
+    if(iptc_flush_entries(chain, my_handle) == 0) {
+        close_iptables();
+        rb_raise(rb_eStandardError, "%s", iptc_strerror(errno));
+    }
+
+    iptc_commit(my_handle);
+
+    close_iptables();
+
+    return self;
+}
+
+VALUE method_zero(VALUE self, VALUE chain_name) {
+
+    const char *chain = StringValueCStr(chain_name);
+
+    open_iptables(self);
+
+    if(iptc_zero_entries(chain, my_handle) == 0) {
+        close_iptables();
+        rb_raise(rb_eStandardError, "%s", iptc_strerror(errno));
+    }
+
+    iptc_commit(my_handle);
+
+    close_iptables();
+
+    return self;
+}
+
+VALUE method_create(VALUE self, VALUE chain_name) {
+
+    const char *chain = StringValueCStr(chain_name);
+
+    open_iptables(self);
+
+    if(iptc_create_chain(chain, my_handle) == 0) {
+        close_iptables();
+        rb_raise(rb_eStandardError, "%s", iptc_strerror(errno));
+    }
+
+    iptc_commit(my_handle);
+
+    close_iptables();
+
+    return self;
+}
+
+VALUE method_delete(VALUE self, VALUE chain_name) {
+
+    const char *chain = StringValueCStr(chain_name);
+
+    open_iptables(self);
+
+    if(iptc_delete_chain(chain, my_handle) == 0) {
+        close_iptables();
+        rb_raise(rb_eStandardError, "%s", iptc_strerror(errno));
+    }
+
+    iptc_commit(my_handle);
+
+    close_iptables();
+
+    return self;
+}
+
+VALUE method_rename(VALUE self, VALUE chain_name, VALUE new_name) {
+
+    const char *chain = StringValueCStr(chain_name);
+    const char *name = StringValueCStr(new_name);
+
+    open_iptables(self);
+
+    if(iptc_rename_chain(chain, name, my_handle) == 0) {
+        close_iptables();
+        rb_raise(rb_eStandardError, "%s", iptc_strerror(errno));
+    }
+
+    iptc_commit(my_handle);
+
+    close_iptables();
+
+    return self;
+}
+
+VALUE method_rules(VALUE self, VALUE chain_name) {
+    const char *chain = StringValueCStr(chain_name);
 
     const struct ipt_entry *e;
 
@@ -110,4 +198,9 @@ void Init_rlibiptc() {
     rb_define_method(cClass, "table", method_table, 0);
     rb_define_method(cClass, "rules", method_rules, 1);
     rb_define_method(cClass, "chains", method_chains, 0);
+    rb_define_method(cClass, "flush", method_flush, 1);
+    rb_define_method(cClass, "zero", method_zero, 1);
+    rb_define_method(cClass, "create", method_create, 1);
+    rb_define_method(cClass, "delete", method_delete, 1);
+    rb_define_method(cClass, "rename", method_rename, 2);
 }
